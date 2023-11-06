@@ -39,6 +39,9 @@ while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_q:
+                done = True
 
     window.fill(white)
     font = pygame.font.SysFont("Arial", FONT_SIZE)
