@@ -4,29 +4,51 @@ import sys
 WINDOW_WIDTH = 640
 WINDOW_HEIGHT = 480
 FPS = 30
-done = False
-white=(255,255,255)
-red = (255,0,0)
-green = (0,255,0)
-blue = (0,0,255)
 
-bg = (127,127,127) 
+x = 200
+y = 150
+white = (255, 255, 255)
+black = (0, 0, 0)
+bg = (127, 127, 127)
+FONT_SIZE = 36
+direction = -1
 
 pygame.init()
+pygame.display.set_caption("Moving text")
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 clock = pygame.time.Clock()
-while True:
+
+
+def update_text_position():
+    global x
+    global direction
+
+    if direction == -1:
+        x -= 5
+    elif direction == +1:
+        x += 5
+
+    if x <= 0:
+        direction = +1
+    elif x >= WINDOW_WIDTH - txtsurf.get_width():
+        direction = -1
+
+done = False
+
+while not done:
     for event in pygame.event.get():
-    # er zijn nog veel meer types events
-        window.fill(bg)
         if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-        font = pygame.font.SysFont("Arial", 36)
-    txtsurf = font.render("Hello, World", True, white)
-    window.blit(txtsurf,(200 - txtsurf.get_width() // 2, 150 - txtsurf.get_height() // 2))
-    # je zou hier ook update() kunnen tegenkomen
-    # maar dat is niet voor full-screen updates
-    # vereist meer fine-tuning
+            done = True
+
+    window.fill(white)
+    font = pygame.font.SysFont("Arial", FONT_SIZE)
+    txtsurf = font.render("Hello, World", True, black)
+    
+    update_text_position()
+    window.blit(txtsurf, (x, y))
+
     pygame.display.flip()
-    pygame.time.Clock().tick(FPS)
+    clock.tick(FPS)
+
+pygame.quit()
+sys.exit()
