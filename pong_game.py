@@ -1,12 +1,16 @@
 import pygame
 import sys
+from collections import namedtuple
 
 WINDOW_WIDTH = 640
 WINDOW_HEIGHT = 480
 FPS = 30
 
-x = 200
-y = 150
+Rectangle = namedtuple("Rectangle", ["width", "height"])
+Point = namedtuple("Point", ["x", "y"])
+rectangle = Rectangle(width=30, height=30)
+point = Point(x=0, y=200)
+
 white = (255, 255, 255)
 black = (0, 0, 0)
 blue = (0, 0, 255)
@@ -21,18 +25,20 @@ clock = pygame.time.Clock()
 
 
 def update_ball_position():
-    global x
+    global point
     global direction
 
     if direction == -1:
-        x -= 5
+        new_point = Point(x=point.x - 5, y=point.y)
     elif direction == +1:
-        x += 5
+        new_point = Point(x=point.x + 5, y=point.y)
 
-    if x <= 0:
+    if point.x <= 0:
         direction = +1
-    elif x >= WINDOW_WIDTH - 30:
+    elif point.x >= WINDOW_WIDTH - 30:
         direction = -1
+    
+    point = new_point
 
 done = False
 
@@ -46,12 +52,12 @@ while not done:
 
     window.fill(white)
 
-    ball = pygame.Surface((30, 30))
+    ball = pygame.Surface((rectangle.width, rectangle.height))
     # round_ball = pygame.draw.circle(ball, (0, 0, 0), (50, 50), 50)
     ball.fill(blue)
 
     update_ball_position()
-    window.blit(ball, (x, y))
+    window.blit(ball, (point.x, point.y))
 
     pygame.display.flip()
     clock.tick(FPS)
