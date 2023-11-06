@@ -9,17 +9,18 @@ x = 200
 y = 150
 white = (255, 255, 255)
 black = (0, 0, 0)
+blue = (0, 0, 255)
 bg = (127, 127, 127)
 FONT_SIZE = 36
 direction = -1
 
 pygame.init()
-pygame.display.set_caption("Moving text")
+pygame.display.set_caption("Moving ball")
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 clock = pygame.time.Clock()
 
 
-def update_text_position():
+def update_ball_position():
     global x
     global direction
 
@@ -30,7 +31,7 @@ def update_text_position():
 
     if x <= 0:
         direction = +1
-    elif x >= WINDOW_WIDTH - txtsurf.get_width():
+    elif x >= WINDOW_WIDTH - 30:
         direction = -1
 
 done = False
@@ -44,11 +45,13 @@ while not done:
                 done = True
 
     window.fill(white)
-    font = pygame.font.SysFont("Arial", FONT_SIZE)
-    txtsurf = font.render("Hello, World", True, black)
-    
-    update_text_position()
-    window.blit(txtsurf, (x, y))
+
+    ball = pygame.Surface((30, 30))
+    # round_ball = pygame.draw.circle(ball, (0, 0, 0), (50, 50), 50)
+    ball.fill(blue)
+
+    update_ball_position()
+    window.blit(ball, (x, y))
 
     pygame.display.flip()
     clock.tick(FPS)
